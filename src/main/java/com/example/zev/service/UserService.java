@@ -1,8 +1,10 @@
 package com.example.zev.service;
 
+import com.example.zev.constants.ErrorCode;
 import com.example.zev.entity.Permission;
 import com.example.zev.entity.Role;
 import com.example.zev.entity.User;
+import com.example.zev.exception.BusinessException;
 import com.example.zev.repository.PermissionRepository;
 import com.example.zev.repository.RoleRepository;
 import com.example.zev.repository.SearchRepository;
@@ -28,11 +30,12 @@ public class UserService extends CrudServiceImpl<User> {
 
 
     @Override
-    public User create(User user) {
+    public User create(User user) throws BusinessException {
         String hashPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashPassword);
         user =  userRepository.save(user);
-        Role role = roleRepository.save(user.getRole());
+        Role role = roleRepository.findById(user.getRole().getId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
         Set<Permission> permissions = user.getRole().getPermissions()
                 .stream().map(permissionRepository::save)
                 .collect(Collectors.toSet());

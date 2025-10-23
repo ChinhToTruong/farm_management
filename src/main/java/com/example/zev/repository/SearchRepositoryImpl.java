@@ -36,30 +36,25 @@ public class SearchRepositoryImpl<T extends BaseEntity> implements SearchReposit
 
 
     @Override
-    public ListResponse<T> search(SearchRequest searchRequest) throws ExecutionException, InterruptedException, BusinessException {
+    public ListResponse<T> search(SearchRequest searchRequest) throws ExecutionException, InterruptedException, BusinessException, ClassNotFoundException {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        Class<T> clazz = (Class<T>) this.getEntityClassByName(searchRequest.getEntity(), entityManager);
+        Class<T> clazz =  this.getEntityClassByName(searchRequest.getEntity());
         CriteriaQuery<T> cq = cb.createQuery(clazz);
         Root<T> root = cq.from(clazz);
         List<Predicate> predicates = conditionQueryBuilder.buildPredicates(searchRequest.getFilters(), root, cb);
         CompletableFuture<List<T>> contentFuture = CompletableFuture.completedFuture(conditionQueryBuilder.getItems(predicates, root, cb, cq, searchRequest, entityManager));
-        CompletableFuture<Long> totalFuture = CompletableFuture.completedFuture(conditionQueryBuilder.count(cb, predicates, entityManager, clazz));
-        CompletableFuture.allOf(contentFuture, totalFuture).join();
+//        CompletableFuture<Long> totalFuture = CompletableFuture.completedFuture(conditionQueryBuilder.count(cb, predicates, entityManager, clazz));
+        CompletableFuture.allOf(contentFuture).join();
 
         return ListResponse.<T>builder()
-                .total(totalFuture.get())
+                .total(10)
                 .items(contentFuture.get())
                 .build();
     }
 
 
-    public Class<?> getEntityClassByName(String entityName, EntityManager entityManager) throws BusinessException {
-        Metamodel metamodel = entityManager.getMetamodel();
-        for (EntityType<?> entityType : metamodel.getEntities()) {
-            if (entityType.getName().equalsIgnoreCase(entityName)) {
-                return entityType.getJavaType();
-            }
-        }
-        throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
+    public Class<T> getEntityClassByName(String entityName) throws BusinessException, ClassNotFoundException {
+        String packageName = "com.example.zev.entity";
+        return (Class<T>) Class.forName(packageName + "." + entityName);
     }
 }

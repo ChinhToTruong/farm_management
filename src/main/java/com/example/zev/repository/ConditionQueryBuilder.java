@@ -39,16 +39,12 @@ public class ConditionQueryBuilder<T> {
         switch (FilterOperator.valueOf(filter.getOperator())) {
             case FilterOperator.eq:
                 predicate = cb.and(predicate, cb.equal(path, value));
-                break;
             case FilterOperator.like:
-                predicate = cb.and(predicate, cb.like(cb.lower(path), "%" + value.toLowerCase() + "%"));
-                break;
+                predicate = cb.and(predicate, cb.like(path, "%" + value + "%"));
             case FilterOperator.gt:
-                predicate = cb.and(predicate, cb.greaterThan(path.as(String.class), value));
-                break;
+                predicate = cb.and(predicate, cb.greaterThan(path, value));
             case FilterOperator.lt:
-                predicate = cb.and(predicate, cb.lessThan(path.as(String.class), value));
-                break;
+                predicate = cb.and(predicate, cb.lessThan(path, value));
             default:
                 // Bỏ qua nếu operator không hợp lệ
                 break;

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public abstract class CrudServiceImpl<T extends BaseEntity> implements CrudService<T> {
@@ -26,17 +27,21 @@ public abstract class CrudServiceImpl<T extends BaseEntity> implements CrudServi
     @Setter(onMethod = @__({@Autowired}))
     private JpaRepository<T, Long> repository;
 
+    @Setter(onMethod_ = @__({@Autowired}))
+    private SearchRepository<T> searchRepository;
+
 
     @Override
     @Transactional
-    public T create(T t) {
+    public T create(T t) throws BusinessException {
         return repository.save(t);
     }
 
     @Override
     @Transactional
-    public T update(T t) {
-        return null;
+    public T update(T t) throws BusinessException {
+        this.findById(t.getId());
+        return repository.save(t);
     }
 
     @Override
@@ -82,8 +87,8 @@ public abstract class CrudServiceImpl<T extends BaseEntity> implements CrudServi
     }
 
     @Override
-    public ListResponse<T> search(SearchRequest searchRequest) {
-        return null;
+    public ListResponse<T> search(SearchRequest searchRequest) throws BusinessException, ExecutionException, InterruptedException, ClassNotFoundException {
+        return searchRepository.search(searchRequest);
     }
 
     protected <D extends BaseEntity> List<D> saveChildren(

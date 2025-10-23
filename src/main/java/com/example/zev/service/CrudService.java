@@ -10,9 +10,9 @@ import java.util.concurrent.ExecutionException;
 
 public interface CrudService<T> {
 
-    T create(T t);
+    T create(T t) throws BusinessException;
 
-    T update(T t);
+    T update(T t) throws BusinessException;
 
     T findById(Long id) throws BusinessException;
 
@@ -22,5 +22,5 @@ public interface CrudService<T> {
 
     void deleteList(List<Long> ids);
 
-    ListResponse<T> search(SearchRequest searchRequest);
+    ListResponse<T> search(SearchRequest searchRequest) throws BusinessException, ExecutionException, InterruptedException, ClassNotFoundException;
 }

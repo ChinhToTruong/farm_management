@@ -9,5 +9,5 @@ import com.example.zev.exception.BusinessException;
 import java.util.concurrent.ExecutionException;
 
 public interface SearchRepository<T extends BaseEntity> {
-    ListResponse<T> search(SearchRequest searchRequest) throws ExecutionException, InterruptedException, BusinessException;
+    ListResponse<T> search(SearchRequest searchRequest) throws ExecutionException, InterruptedException, BusinessException, ClassNotFoundException;
 }
