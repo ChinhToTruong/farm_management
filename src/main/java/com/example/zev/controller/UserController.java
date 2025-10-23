@@ -6,26 +6,38 @@ import com.example.zev.dto.response.ResponseData;
 import com.example.zev.entity.User;
 import com.example.zev.exception.BusinessException;
 import com.example.zev.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/search")
-    public ResponseData<?> search(@RequestBody SearchRequest searchRequest) throws ExecutionException, InterruptedException, BusinessException {
+//    @GetMapping("/search")
+//    public ResponseData<?> search(@RequestBody SearchRequest searchRequest) throws ExecutionException, InterruptedException, BusinessException {
+//        return ResponseData.builder()
+//                .data(userService.search(searchRequest))
+//                .build();
+//    }
+
+    @PostMapping
+    public ResponseData<?> create(@RequestBody @Valid User user) {
         return ResponseData.builder()
-                .data(userService.search(searchRequest))
+                .data(userService.create(user))
+                .build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseData<?> search(@PathVariable("id") Long id) throws ExecutionException, InterruptedException, BusinessException {
+        return ResponseData.builder()
+                .data(userService.findById(id))
                 .build();
     }
 }

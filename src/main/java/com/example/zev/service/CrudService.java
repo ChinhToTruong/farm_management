@@ -22,5 +22,5 @@ public interface CrudService<T> {
 
     void deleteList(List<Long> ids);
 
-    ListResponse<T> search(SearchRequest searchRequest) throws ExecutionException, InterruptedException, BusinessException;
+    ListResponse<T> search(SearchRequest searchRequest);
 }
