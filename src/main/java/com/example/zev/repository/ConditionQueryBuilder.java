@@ -35,7 +35,7 @@ public class ConditionQueryBuilder<T> {
     public Predicate getOperator(FilterRequest filter, CriteriaBuilder cb, Root<T> root) {
         Path<String> path = getPath(root, filter.getField());
         String value = filter.getValue();
-        Predicate predicate = cb.conjunction();
+        Predicate predicate = cb.conjunction(); // doan nay co the return truc tiep trong switch
         switch (FilterOperator.valueOf(filter.getOperator())) {
             case FilterOperator.eq:
                 predicate = cb.and(predicate, cb.equal(path, value));
