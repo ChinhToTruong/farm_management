@@ -47,4 +47,5 @@ public class UserService extends CrudServiceImpl<User> {
         user =  userRepository.save(user);
         return user;
     }
+
 }

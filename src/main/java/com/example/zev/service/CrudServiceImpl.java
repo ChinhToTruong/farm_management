@@ -9,6 +9,7 @@ import com.example.zev.exception.BusinessException;
 import com.example.zev.repository.CrudRepository;
 import com.example.zev.repository.GenericSpecification;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +28,9 @@ public abstract class CrudServiceImpl<T extends BaseEntity> implements CrudServi
     @Setter(onMethod = @__({@Autowired}))
     private CrudRepository<T> repository;
 
+    @Setter(onMethod_ = @__({@Autowired}))
+    private ModelMapper modelMapper;
+
 
     @Override
     @Transactional
@@ -37,8 +41,9 @@ public abstract class CrudServiceImpl<T extends BaseEntity> implements CrudServi
     @Override
     @Transactional
     public T update(T t) throws BusinessException {
-        this.findById(t.getId());
-        return repository.save(t);
+        T old = this.findById(t.getId());
+        modelMapper.map(t, old);
+        return repository.save(old);
     }
 
     @Override
