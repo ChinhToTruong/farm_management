@@ -11,7 +11,7 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    private final List<String> allowedOrigins = List.of("http://localhost:300");
+    private final List<String> allowedOrigins = List.of("http://localhost:3000");
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
