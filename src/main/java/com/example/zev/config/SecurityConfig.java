@@ -1,5 +1,7 @@
 package com.example.zev.config;
 
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.NonFinal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,12 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final AuthenticationEntryPointImpl authenticationEntryPoint;
+    private final AccessDeniedImpl deniedHandler;
 
-    List<String> WHITE_LIST = List.of(
+    @NonFinal
+    private final List<String> WHITE_LIST = List.of(
             "/auth/**",
-            "/users/**",
-            "/**"
+            "/users/**"
     );
 
 
@@ -28,6 +33,10 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(deniedHandler)
+                )
                 .httpBasic(AbstractHttpConfigurer::disable);
         return http.build();
     }

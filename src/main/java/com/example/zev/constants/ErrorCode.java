@@ -13,6 +13,8 @@ public enum ErrorCode {
     ENTITY_NOT_FOUND("1", "Entity not found!"),
     SEARCH_FIELD_INVALID("2", "Search field invalid!"),
     EXPORT_FILE_ERROR("3", "Export file error!"),
+    ACCESS_DENIED_ERROR("401", "Access denied!"),
+    FORBIDDEN_ERROR("403", "Forbidden!"),
     ;
 
     private String code;
