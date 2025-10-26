@@ -10,6 +10,7 @@ import com.example.zev.repository.RoleRepository;
 import com.example.zev.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,6 +33,7 @@ public class UserService extends CrudServiceImpl<User> {
 
 
     @Override
+    @Transactional
     public User create(User user) throws BusinessException {
         String hashPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashPassword);
@@ -42,10 +44,9 @@ public class UserService extends CrudServiceImpl<User> {
                 .collect(Collectors.toSet());
 
         role.setPermissions(new HashSet<>(permissionRepository.findAllById(permissions)));
-        role = roleRepository.save(role);
+        roleRepository.save(role);
         user.setRole(role);
-        user =  userRepository.save(user);
-        return user;
+        return userRepository.save(user);
     }
 
 }

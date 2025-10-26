@@ -16,7 +16,7 @@ import java.util.Set;
 @FieldNameConstants
 public class Role extends BaseEntity implements Serializable {
 
-    @Pattern(regexp = "^FARMER|ENGINEER|ADMIN$")
+//    @Pattern(regexp = "^FARMER|ENGINEER|ADMIN$", message = "roleName must be admin, engineer, admin")
     private String roleName;
     private String roleDescription;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

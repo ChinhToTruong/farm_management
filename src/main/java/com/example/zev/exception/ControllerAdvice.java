@@ -5,6 +5,7 @@ import com.example.zev.dto.response.ResponseData;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -76,6 +77,15 @@ public class ControllerAdvice {
         return ResponseData.builder()
                 .code(ErrorCode.SEARCH_FIELD_INVALID.getCode())
                 .errors(errors)
+                .build();
+    }
+
+    @ExceptionHandler({UsernameNotFoundException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseData<?> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+        return ResponseData.builder()
+                .code(ErrorCode.ENTITY_NOT_FOUND.getCode())
+                .message(ex.getMessage())
                 .build();
     }
 

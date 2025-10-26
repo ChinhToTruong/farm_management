@@ -41,7 +41,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
 //    @Transient
 //    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
 
     @Column(name = "status")

@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Data
 @FieldNameConstants
 public class Permission extends BaseEntity implements Serializable {
-    @Pattern(regexp = "^WRITE|READ$")
+//    @Pattern(regexp = "^WRITE|READ$")
     private String permissionName;
     private String permissionDescription;
 }
