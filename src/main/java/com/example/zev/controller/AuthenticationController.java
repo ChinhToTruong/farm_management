@@ -37,9 +37,17 @@ public class AuthenticationController {
     }
 
     @GetMapping("/forgot-password")
-    public void forgotPassword(@RequestParam("email") String email){
-        ResponseData.builder()
+    public ResponseData<?> forgotPassword(@RequestParam("email") String email){
+        return ResponseData.builder()
                 .data(authService.forgotPassword(email))
                 .build();
     }
+
+    @PostMapping("/logout")
+    public ResponseData<?> logout(@RequestParam("token") String token) throws BusinessException {
+        return ResponseData.builder()
+                .data(authService.logout(token))
+                .build();
+    }
+
 }

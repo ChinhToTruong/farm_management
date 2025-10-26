@@ -108,4 +108,13 @@ public class AuthService {
         }
         return null;
     }
+
+    public String logout(String token) throws BusinessException {
+        Token currentToken = tokenRepository.findByToken(token)
+                .orElseThrow(() -> new BusinessException(ErrorCode.UNKNOW_ERROR, "token not found"));
+        currentToken.setExpired(true);
+        currentToken.setRevoked(true);
+        tokenRepository.save(currentToken);
+        return "Sucess!";
+    }
 }
