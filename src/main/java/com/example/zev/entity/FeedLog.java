@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "feed_logs")
 @Data
 @FieldNameConstants
-public class FeedLog extends BaseEntity{
+public class FeedLog extends BaseEntity {
 
     @ManyToOne
     private AnimalBatch animalBatch;

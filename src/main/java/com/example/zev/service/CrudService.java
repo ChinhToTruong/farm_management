@@ -24,4 +24,5 @@ public interface CrudService<T> {
     void deleteList(List<Long> ids);
 
     Page<T> search(SearchRequest searchRequest) throws BusinessException;
+
 }

@@ -10,13 +10,14 @@ import lombok.experimental.FieldNameConstants;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity(name = "InventoryTransaction")
 @Table(name = "inventory_transactions")
 @Data
 @FieldNameConstants
-public class InventoryTransaction extends BaseEntity{
+public class InventoryTransaction extends BaseEntity implements ExportExcel{
 
     @ManyToOne
     private Item item; // Vật tư được nhập hoặc xuất
@@ -40,4 +41,32 @@ public class InventoryTransaction extends BaseEntity{
     @ManyToOne
     private Plant relatedPlant; // Nếu liên quan đến cây trồng
 
+    @Override
+    public List<String> getExcelHeaders() {
+        return List.of(
+                "ID", "Vật tư", "Loại giao dịch", "Số lượng", "Đơn giá",
+                "Thành tiền", "Ngày giao dịch", "Ghi chú",
+                "Đàn vật nuôi", "Cây trồng", "Người tạo", "Ngày tạo", "Người sửa", "Ngày sửa"
+        );
+    }
+
+    @Override
+    public List<Object> getExcelData() {
+        return List.of(
+                getId(),
+                item != null ? item.getName() : "",
+                transactionType,
+                quantity,
+                unitPrice,
+                totalAmount,
+                transactionDate != null ? transactionDate.toString() : "",
+                note,
+                relatedAnimalBatch != null ? relatedAnimalBatch.getBatchName() : "",
+                relatedPlant != null ? relatedPlant.getPlantName() : "",
+                getCreatedBy(),
+                getCreatedAt() != null ? getCreatedAt().toString() : "",
+                getLastModifiedBy(),
+                getLastModifiedAt() != null ? getLastModifiedAt().toString() : ""
+        );
+    }
 }

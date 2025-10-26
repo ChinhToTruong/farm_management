@@ -5,18 +5,22 @@ import com.example.zev.dto.response.ResponseData;
 import com.example.zev.entity.AnimalBatch;
 import com.example.zev.exception.BusinessException;
 import com.example.zev.service.AnimalBatchService;
+import com.example.zev.service.CategoryService;
 import com.example.zev.service.CrudService;
+import com.example.zev.service.ExportExcelService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STRestartNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class BaseController<T> {
-
     protected final CrudService<T> service;
 
     protected BaseController(CrudService<T> service) {
