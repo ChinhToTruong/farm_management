@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
@@ -45,6 +46,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     @Column(name = "status")
     @NotBlank(message = "status is required")
+    @Pattern(regexp = "^ACTIVE|INACTIVE", message = "status must be active, inactive")
     private String status;
 
 

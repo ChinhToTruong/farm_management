@@ -1,6 +1,7 @@
 package com.example.zev.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
@@ -14,6 +15,8 @@ import java.util.Set;
 @Data
 @FieldNameConstants
 public class Role extends BaseEntity implements Serializable {
+
+    @Pattern(regexp = "^FARMER|ENGINEER|ADMIN$")
     private String roleName;
     private String roleDescription;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
