@@ -2,6 +2,7 @@ package com.example.zev.controller;
 
 import com.example.zev.dto.request.AuthenticationRequest;
 import com.example.zev.dto.response.ResponseData;
+import com.example.zev.entity.User;
 import com.example.zev.exception.BusinessException;
 import com.example.zev.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,9 +45,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-    public ResponseData<?> logout(@RequestParam("token") String token) throws BusinessException {
+    public ResponseData<?> logout(@RequestBody User user) throws BusinessException {
         return ResponseData.builder()
-                .data(authService.logout(token))
+                .data(authService.logout(user))
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package com.example.zev.dto.response;
 
+import com.example.zev.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class AuthenticationResponse {
     private String accessToken;
     private String refreshToken;
+    private User user;
 }
