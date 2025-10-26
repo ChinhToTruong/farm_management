@@ -18,5 +18,4 @@ public class SearchRequest implements Serializable {
     private int pageSize;
     List<FilterRequest> filters;
     List<SortRequest> sorts;
-    private String entity;
 }

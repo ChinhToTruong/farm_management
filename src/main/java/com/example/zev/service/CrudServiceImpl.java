@@ -1,34 +1,31 @@
 package com.example.zev.service;
 
 import com.example.zev.constants.ErrorCode;
+import com.example.zev.constants.SortValue;
 import com.example.zev.dto.request.SearchRequest;
-import com.example.zev.dto.response.ListResponse;
+import com.example.zev.dto.request.SortRequest;
 import com.example.zev.entity.BaseEntity;
 import com.example.zev.exception.BusinessException;
 import com.example.zev.repository.CrudRepository;
-import com.example.zev.repository.SearchRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import lombok.RequiredArgsConstructor;
+import com.example.zev.repository.GenericSpecification;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public abstract class CrudServiceImpl<T extends BaseEntity> implements CrudService<T> {
 
     @Setter(onMethod = @__({@Autowired}))
-    private JpaRepository<T, Long> repository;
-
-    @Setter(onMethod_ = @__({@Autowired}))
-    private SearchRepository<T> searchRepository;
+    private CrudRepository<T> repository;
 
 
     @Override
@@ -69,11 +66,22 @@ public abstract class CrudServiceImpl<T extends BaseEntity> implements CrudServi
         repository.deleteAllById(ids);
     }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public ListResponse<T> search(SearchRequest searchRequest) throws ExecutionException, InterruptedException, BusinessException {
-//        return searchRepository.search(searchRequest);
-//    }
+    @Override
+    public Page<T> search(SearchRequest request) throws BusinessException {
+        Specification<T> specification = new GenericSpecification<>(request);
+        // build sort
+        List<Sort.Order> orders = new ArrayList<>();
+        if (request.getSorts() != null) {
+            for (SortRequest s : request.getSorts()) {
+                Sort.Direction dir = SortValue.DESC.name().equalsIgnoreCase(s.getDirection()) ? Sort.Direction.DESC : Sort.Direction.ASC;
+                orders.add(new Sort.Order(dir, s.getField()));
+            }
+        }
+
+        Pageable pageable = PageRequest.of(request.getPageNo(), request.getPageSize(), Sort.by(orders));
+        return repository.findAll(specification, pageable);
+    }
+
 
     protected <D extends BaseEntity> List<D> mappingChildren(
             Long parentId,
@@ -86,10 +94,6 @@ public abstract class CrudServiceImpl<T extends BaseEntity> implements CrudServi
         return repo.findAll(spec);
     }
 
-    @Override
-    public ListResponse<T> search(SearchRequest searchRequest) throws BusinessException, ExecutionException, InterruptedException, ClassNotFoundException {
-        return searchRepository.search(searchRequest);
-    }
 
     protected <D extends BaseEntity> List<D> saveChildren(
             Long parentId,

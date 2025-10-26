@@ -14,7 +14,8 @@ public class SecurityConfig {
 
     List<String> WHITE_LIST = List.of(
             "/auth/**",
-            "/users/**"
+            "/users/**",
+            "/**"
     );
 
 

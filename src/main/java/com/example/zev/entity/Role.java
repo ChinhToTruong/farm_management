@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity
+@Entity(name = "Role")
 @Table(name = "roles")
 @Data
 @FieldNameConstants

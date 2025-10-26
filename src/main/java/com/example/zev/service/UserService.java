@@ -7,11 +7,7 @@ import com.example.zev.entity.User;
 import com.example.zev.exception.BusinessException;
 import com.example.zev.repository.PermissionRepository;
 import com.example.zev.repository.RoleRepository;
-import com.example.zev.repository.SearchRepository;
 import com.example.zev.repository.UserRepository;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +16,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class UserService extends CrudServiceImpl<User> {
 
     private final PasswordEncoder passwordEncoder;
@@ -28,19 +23,28 @@ public class UserService extends CrudServiceImpl<User> {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
 
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, RoleRepository roleRepository, PermissionRepository permissionRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.permissionRepository = permissionRepository;
+    }
+
 
     @Override
     public User create(User user) throws BusinessException {
         String hashPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashPassword);
-        user =  userRepository.save(user);
         Role role = roleRepository.findById(user.getRole().getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
-        Set<Permission> permissions = user.getRole().getPermissions()
-                .stream().map(permissionRepository::save)
+        Set<Long> permissions = user.getRole().getPermissions()
+                .stream().map(Permission::getId)
                 .collect(Collectors.toSet());
-        role.setPermissions(permissions);
+
+        role.setPermissions(new HashSet<>(permissionRepository.findAllById(permissions)));
+        role = roleRepository.save(role);
         user.setRole(role);
+        user =  userRepository.save(user);
         return user;
     }
 }

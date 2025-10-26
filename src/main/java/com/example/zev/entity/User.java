@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity
+@Entity(name = "User")
 @Table(name = "users")
 @Data
 @FieldNameConstants
@@ -40,7 +40,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
 //    @Transient
 //    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Role role;
 
     @Column(name = "status")

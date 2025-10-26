@@ -9,7 +9,7 @@ import lombok.experimental.FieldNameConstants;
 import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity
+@Entity(name = "Permission")
 @Table(name = "permissions")
 @Data
 @FieldNameConstants

@@ -4,6 +4,7 @@ package com.example.zev.service;
 import com.example.zev.dto.request.SearchRequest;
 import com.example.zev.dto.response.ListResponse;
 import com.example.zev.exception.BusinessException;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -22,5 +23,5 @@ public interface CrudService<T> {
 
     void deleteList(List<Long> ids);
 
-    ListResponse<T> search(SearchRequest searchRequest) throws BusinessException, ExecutionException, InterruptedException, ClassNotFoundException;
+    Page<T> search(SearchRequest searchRequest) throws BusinessException;
 }
