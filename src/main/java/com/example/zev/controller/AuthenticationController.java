@@ -37,7 +37,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/forgot-password")
-    public ResponseData<?> forgotPassword(@RequestParam("email") String email){
+    public ResponseData<?> forgotPassword(@RequestBody String email){
         return ResponseData.builder()
                 .data(authService.forgotPassword(email))
                 .build();
