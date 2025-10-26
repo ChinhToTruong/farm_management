@@ -55,7 +55,7 @@ public class AuthService {
 
     public String forgotPassword(String email) {
         //send email here
-        return "Success";
+        return email;
     }
 
     private void saveUserToken(User user, String jwtToken) {
