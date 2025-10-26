@@ -1,10 +1,12 @@
 package com.example.zev.service;
 
+import com.example.zev.constants.ErrorCode;
 import com.example.zev.constants.TokenType;
 import com.example.zev.dto.request.AuthenticationRequest;
 import com.example.zev.dto.response.AuthenticationResponse;
 import com.example.zev.entity.Token;
 import com.example.zev.entity.User;
+import com.example.zev.exception.BusinessException;
 import com.example.zev.repository.TokenRepository;
 import com.example.zev.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +53,11 @@ public class AuthService {
                 .build();
     }
 
+    public String forgotPassword(String email) {
+        //send email here
+        return "Success";
+    }
+
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder()
                 .user(user)
@@ -73,15 +80,15 @@ public class AuthService {
         tokenRepository.saveAll(validUserTokens);
     }
 
-    public void refreshToken(
+    public AuthenticationResponse refreshToken(
             HttpServletRequest request,
             HttpServletResponse response
-    ) throws IOException {
+    ) throws IOException, BusinessException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
         if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
-            return;
+            throw new BusinessException(ErrorCode.UNKNOW_ERROR, "failed");
         }
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
@@ -92,12 +99,13 @@ public class AuthService {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
-                var authResponse = AuthenticationResponse.builder()
+                return AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
                         .build();
-                objectMapper.writeValue(response.getOutputStream(), authResponse);
+
             }
         }
+        return null;
     }
 }

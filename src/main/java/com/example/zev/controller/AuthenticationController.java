@@ -2,15 +2,13 @@ package com.example.zev.controller;
 
 import com.example.zev.dto.request.AuthenticationRequest;
 import com.example.zev.dto.response.ResponseData;
+import com.example.zev.exception.BusinessException;
 import com.example.zev.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -29,10 +27,19 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh-token")
-    public void refreshToken(
+    public ResponseData<?> refreshToken(
             HttpServletRequest request,
             HttpServletResponse response
-    ) throws IOException {
-        authService.refreshToken(request, response);
+    ) throws IOException, BusinessException {
+        return ResponseData.builder()
+                .data(authService.refreshToken(request, response))
+                .build();
+    }
+
+    @GetMapping("/forgot-password")
+    public void forgotPassword(@RequestParam("email") String email){
+        ResponseData.builder()
+                .data(authService.forgotPassword(email))
+                .build();
     }
 }
