@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/work-diaries")
 public class WorkDiaryController extends BaseController<WorkDiary> {
 
-    protected WorkDiaryService service;
+    protected final WorkDiaryService service;
 
 
     protected WorkDiaryController(WorkDiaryService service) {
