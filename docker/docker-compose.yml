@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16
+    container_name: zev-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: my_database
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d  # nơi chứa các file SQL khởi tạo
+    networks:
+      - zev-network
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: zev-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/my_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - zev-network
+
+networks:
+  zev-network:
+    driver: bridge
