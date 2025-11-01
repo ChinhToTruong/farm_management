@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseData<?> update(@RequestBody @Valid User user) throws BusinessException {
+    public ResponseData<?> update(@RequestBody User user) throws BusinessException {
         return ResponseData.builder()
                 .data(userService.update(user))
                 .build();
