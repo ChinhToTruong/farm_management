@@ -29,7 +29,8 @@ public class SecurityConfig {
             "/test/**",
             "/roles/**",
             "/permissions/**",
-            "/files/**"
+            "/files/**",
+            "/email/**"
     );
 
 

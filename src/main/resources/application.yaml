@@ -19,7 +19,7 @@ spring:
         format_sql: true
   datasource:
     platform: postgres
-    url: jdbc:postgresql://postgres:5432/my_database
+    url: jdbc:postgresql://localhost:5432/my_database
     username: postgres
     password: root
     driverClassName: org.postgresql.Driver
@@ -34,6 +34,17 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: totruongchinh@gmail.com
+    password: ytwq fzvg jozz tybk   # App Password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
 
 application:
   security:
