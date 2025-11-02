@@ -115,4 +115,23 @@ public class AuthService {
         this.revokeAllUserTokens(user);
         return "Sucess!";
     }
+
+    public User getCurrentUser(HttpServletRequest request, HttpServletResponse response) throws BusinessException {
+
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String token;
+        final String userEmail;
+        if (authHeader == null ||!authHeader.startsWith("Bearer "))
+            throw new BusinessException(ErrorCode.UNKNOW_ERROR, "failed");
+
+        token = authHeader.substring(7);
+        userEmail = jwtService.extractUsername(token);
+
+        if (userEmail != null) {
+            return this.repository.findByEmail(userEmail)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        }
+        return null;
+    }
+
 }

@@ -18,7 +18,7 @@ public class FeedLogService extends CrudServiceImpl<FeedLog> {
 
     @Override
     public FeedLog create(FeedLog feedLog) throws BusinessException {
-        User user = userService.findById(feedLog.getUser().getId());
+        User user = userService.findEntity(feedLog.getUser().getId());
         AnimalBatch animalBatch = animalBatchService.findById(feedLog.getAnimalBatch().getId());
         feedLog.setUser(user);
         feedLog.setAnimalBatch(animalBatch);

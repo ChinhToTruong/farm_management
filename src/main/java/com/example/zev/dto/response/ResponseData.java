@@ -12,7 +12,8 @@ import java.util.Map;
 @NoArgsConstructor
 @Builder
 public class ResponseData<T> {
-    private String message;
+    @Builder.Default
+    private String message = "success";
     @Builder.Default
     private String code = "200";
     private Map<String, String> errors;

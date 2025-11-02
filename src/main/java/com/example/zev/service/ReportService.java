@@ -18,7 +18,7 @@ public class ReportService extends CrudServiceImpl<Report> {
 
     @Override
     public Report create(Report report) throws BusinessException {
-        User user = userService.findById(report.getUser().getId());
+        User user = userService.findEntity(report.getUser().getId());
         CropSeason  cropSeason = cropSeasonService.findById(report.getCropSeason().getId());
 
         if (report.getBatch() != null) {

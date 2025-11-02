@@ -51,4 +51,13 @@ public class AuthenticationController {
                 .build();
     }
 
+    @GetMapping("/current")
+    public ResponseData<?> getCurrentUser(HttpServletRequest request,
+                                          HttpServletResponse response) throws BusinessException {
+        return ResponseData
+                .builder()
+                .data(authService.getCurrentUser(request, response))
+                .build();
+    }
+
 }

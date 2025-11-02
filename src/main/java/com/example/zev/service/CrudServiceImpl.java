@@ -6,6 +6,7 @@ import com.example.zev.dto.request.SearchRequest;
 import com.example.zev.dto.request.SortRequest;
 import com.example.zev.entity.BaseEntity;
 import com.example.zev.exception.BusinessException;
+import com.example.zev.mapper.BaseMapper;
 import com.example.zev.repository.CrudRepository;
 import com.example.zev.repository.GenericSpecification;
 import lombok.Setter;

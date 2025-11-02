@@ -20,7 +20,7 @@ public class WorkDiaryService extends CrudServiceImpl<WorkDiary> {
 
     @Override
     public WorkDiary create(WorkDiary entity) throws BusinessException {
-        User user = userService.findById(entity.getUser().getId());
+        User user = userService.findEntity(entity.getUser().getId());
         CropSeason cropSeason = cropSeasonService.findById(entity.getCropSeason().getId());
         if (entity.getPlant() != null){
             Plant plant = plantService.findById(entity.getPlant().getId());

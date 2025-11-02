@@ -32,7 +32,13 @@ public class BeanConfig {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration()
                 .setSkipNullEnabled(true) // 👈 Quan trọng
-                .setMatchingStrategy(MatchingStrategies.STRICT);
+                .setMatchingStrategy(MatchingStrategies.STRICT)
+                .setPropertyCondition(context ->
+                        context.getMapping().getLastDestinationProperty()
+                                .getType()
+                                .getPackageName()
+                                .startsWith("java") // chỉ map các kiểu đơn giản như String, Integer
+                );
         return mapper;
     }
 

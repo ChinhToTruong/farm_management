@@ -1,4 +1,5 @@
 version: "3.9"
+name: farm
 services:
   postgres:
     image: postgres:16
@@ -9,6 +10,7 @@ services:
       POSTGRES_DB: my_database
     ports:
       - "5432:5432"
+    restart: on-failure
     volumes:
       - ./init:/docker-entrypoint-initdb.d  # nơi chứa các file SQL khởi tạo
     networks:
@@ -27,6 +29,40 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+    networks:
+      - zev-network
+  minio:
+    extends:
+      file: ./minio.yml
+      service: minio
+    networks:
+      - zev-network
+  redis:
+    extends:
+      file: ./redis.yml
+      service: redis
+    networks:
+      - zev-network
+  zookeeper:
+    extends:
+      file: ./kafka.yml
+      service: zookeeper
+    networks:
+      - zev-network
+  broker:
+    extends:
+      file: ./kafka.yml
+      service: broker
+    depends_on:
+      - zookeeper
+    networks:
+      - zev-network
+  kafka-ui:
+    extends:
+      file: ./kafka.yml
+      service: kafka-ui
+    depends_on:
+      - broker
     networks:
       - zev-network
 

@@ -2,7 +2,10 @@ server:
   port: 8080
 
 spring:
-
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   application:
     name: final-project-be
 
@@ -20,6 +23,18 @@ spring:
     username: postgres
     password: root
     driverClassName: org.postgresql.Driver
+
+  kafka:
+    bootstrap-servers: broker:9092
+    consumer:
+      group-id: email-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 application:
   security:
     jwt:
@@ -27,3 +42,9 @@ application:
       expiration: 86400000 # a day
       refresh-token:
         expiration: 604800000 # 7 days
+
+minio:
+  url: http://localhost:9000
+  access-key: admin
+  secret-key: admin@123
+  bucket: mybucket

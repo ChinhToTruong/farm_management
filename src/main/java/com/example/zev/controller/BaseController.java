@@ -3,6 +3,7 @@ package com.example.zev.controller;
 import com.example.zev.dto.request.SearchRequest;
 import com.example.zev.dto.response.ResponseData;
 import com.example.zev.entity.AnimalBatch;
+import com.example.zev.entity.BaseEntity;
 import com.example.zev.exception.BusinessException;
 import com.example.zev.service.AnimalBatchService;
 import com.example.zev.service.CategoryService;
@@ -35,9 +36,9 @@ public class BaseController<T> {
     }
 
     @PostMapping
-    public ResponseData<?> create(@RequestBody @Valid T entity) throws BusinessException {
+    public ResponseData<?> create(@RequestBody @Valid T dto) throws BusinessException {
         return ResponseData.builder()
-                .data(service.create(entity))
+                .data(service.create(dto))
                 .build();
     }
 
@@ -49,9 +50,9 @@ public class BaseController<T> {
     }
 
     @PutMapping
-    public ResponseData<?> update(@RequestBody @Valid T entity) throws BusinessException {
+    public ResponseData<?> update(@RequestBody @Valid T dto) throws BusinessException {
         return ResponseData.builder()
-                .data(service.update(entity))
+                .data(service.update(dto))
                 .build();
     }
 

@@ -3,6 +3,7 @@ package com.example.zev.controller;
 import com.example.zev.dto.request.SearchRequest;
 import com.example.zev.dto.response.ListResponse;
 import com.example.zev.dto.response.ResponseData;
+import com.example.zev.dto.response.user.UserDto;
 import com.example.zev.entity.User;
 import com.example.zev.exception.BusinessException;
 import com.example.zev.service.UserService;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseData<?> create(@RequestBody @Valid User user) throws BusinessException {
+    public ResponseData<?> create(@RequestBody @Valid UserDto user) throws BusinessException {
         return ResponseData.builder()
                 .data(userService.create(user))
                 .build();
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseData<?> update(@RequestBody User user) throws BusinessException {
+    public ResponseData<?> update(@RequestBody UserDto user) throws BusinessException {
         return ResponseData.builder()
                 .data(userService.update(user))
                 .build();
