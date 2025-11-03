@@ -8,3 +8,5 @@ services:
     # remove the "127.0.0.1:" prefix
     ports:
       - 6379:6379
+    volumes:
+      - ./data/redis:/data

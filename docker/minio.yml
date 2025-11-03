@@ -8,8 +8,8 @@ services:
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: admin@123
     volumes:
-      - ./data:/minio/minio/data
-      - ./config:/opt/minio/minio/config
+      - ./data/minio:/minio/minio/data
+      - ./config/minio:/opt/minio/minio/config
     ports:
       - '9000:9000'
       - '9001:9001'
