@@ -25,7 +25,6 @@ import java.util.*;
 @FieldNameConstants
 public class User extends BaseEntity implements UserDetails, Serializable {
     @Column(name = "name")
-    @NotBlank(message = "name is required")
     private String name;
 
     @Column(name = "date_of_birth")
@@ -33,15 +32,12 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     private LocalDateTime dob;
 
     @Column(name = "password")
-    @NotBlank(message = "password is required")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "email")
-    @NotBlank(message = "email is required")
     private String email;
 
-    @NotBlank(message = "phone is required")
     @Column(name = "phone")
     private String phone;
 
@@ -51,8 +47,6 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     private Role role;
 
     @Column(name = "status")
-    @NotBlank(message = "status is required")
-    @Pattern(regexp = "^ACTIVE|INACTIVE", message = "status must be active, inactive")
     private String status;
 
 

@@ -40,7 +40,7 @@ public class UserService extends CrudServiceImplV2<User, UserDto> {
     @Transactional
     public UserDto create(UserDto user) throws BusinessException {
         String hashPassword = passwordEncoder.encode(user.getPassword());
-        User newUser = new User();
+        User newUser = userMapper.create(user);
         newUser.setPassword(hashPassword);
         Role role = roleRepository.findById(user.getRole().getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));

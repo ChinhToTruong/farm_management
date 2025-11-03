@@ -1,5 +1,6 @@
 package com.example.zev.controller;
 
+import com.example.zev.dto.response.ResponseData;
 import com.example.zev.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -16,8 +17,8 @@ public class FileController {
 
 
     @PostMapping("/upload")
-    public String upload(@RequestParam("file") MultipartFile file) throws Exception {
-        return minioService.uploadFile(file);
+    public ResponseData<?> upload(@RequestParam("file") MultipartFile file) throws Exception {
+        return ResponseData.builder().data(minioService.uploadFile(file)).build();
     }
 
     @GetMapping("/download/{fileName}")
@@ -32,5 +33,12 @@ public class FileController {
     @GetMapping("/create-bucket")
     public void createBucket() throws Exception {
         minioService.createBucketIfNotExists();
+    }
+
+    @GetMapping("/get-file/{bucketName}/{fileName}")
+    public ResponseData<?> getFile(@PathVariable("bucketName") String bucketName, @PathVariable("fileName") String fileName) throws Exception {
+        return ResponseData.builder()
+                .data(minioService.getFileAsBase64(bucketName, fileName))
+                .build();
     }
 }

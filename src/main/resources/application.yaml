@@ -19,7 +19,7 @@ spring:
         format_sql: true
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/my_database
+    url: jdbc:postgresql://postgres:5432/my_database
     username: postgres
     password: root
     driverClassName: org.postgresql.Driver
@@ -55,7 +55,7 @@ application:
         expiration: 604800000 # 7 days
 
 minio:
-  url: http://localhost:9000
+  url: http://minio:9000
   access-key: admin
   secret-key: admin@123
   bucket: mybucket
