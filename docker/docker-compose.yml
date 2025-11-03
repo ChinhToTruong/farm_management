@@ -35,6 +35,7 @@ services:
       - postgres
     networks:
       - zev-network
+    restart: always
   minio:
     extends:
       file: ./minio.yml
