@@ -26,8 +26,8 @@ public class FileService {
 
 
     public UploadFileResponse uploadFile(MultipartFile file) throws Exception {
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        String uploadDir = "http://localhost:9001/browser";
+        String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+        String uploadDir = "http://minio:9001/browser";
 
         minioClient.putObject(
                 PutObjectArgs.builder()
