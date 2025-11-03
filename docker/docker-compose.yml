@@ -12,9 +12,11 @@ services:
       - "5432:5432"
     restart: on-failure
     volumes:
-      - ./init:/docker-entrypoint-initdb.d  # nơi chứa các file SQL khởi tạo
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./init/postgres:/docker-entrypoint-initdb.d  # nơi chứa các file SQL khởi tạo
     networks:
       - zev-network
+    entrypoint: ["/docker-entrypoint-initdb.d/run-init.sh"]
 
   app:
     build:
