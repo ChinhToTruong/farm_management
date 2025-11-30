@@ -20,19 +20,19 @@ public class WorkDiaryService extends CrudServiceImpl<WorkDiary> {
 
     @Override
     public WorkDiary create(WorkDiary entity) throws BusinessException {
-        User user = userService.findEntity(entity.getUser().getId());
-        CropSeason cropSeason = cropSeasonService.findById(entity.getCropSeason().getId());
-        if (entity.getPlant() != null){
-            Plant plant = plantService.findById(entity.getPlant().getId());
-            entity.setPlant(plant);
-        }
-
-        if (entity.getBatch() != null){
-            AnimalBatch animalBatch = animalBatchService.findById(entity.getBatch().getId());
-            entity.setBatch(animalBatch);
-        }
-        entity.setCropSeason(cropSeason);
-        entity.setUser(user);
+//        User user = userService.findEntity(entity.getUserId());
+//        CropSeason cropSeason = cropSeasonService.findById(entity.getCropSeasonId());
+//        if (entity.getPlant() != null){
+//            Plant plant = plantService.findById(entity.getPlant().getId());
+//            entity.setPlant(plant);
+//        }
+//
+//        if (entity.getBatch() != null){
+//            AnimalBatch animalBatch = animalBatchService.findById(entity.getBatch().getId());
+//            entity.setBatch(animalBatch);
+//        }
+//        entity.setCropSeason(cropSeason);
+//        entity.setUser(user);
 
         return super.create(entity);
     }

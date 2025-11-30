@@ -1,5 +1,6 @@
 package com.example.zev.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
@@ -26,12 +27,12 @@ public class BaseEntity implements Serializable {
 
     @CreatedDate
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "last_modified_at")
-    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime lastModifiedAt;
 
     @CreatedBy

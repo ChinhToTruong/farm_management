@@ -18,11 +18,11 @@ public class VaccinationService extends CrudServiceImpl<Vaccination> {
 
     @Override
     public Vaccination create(Vaccination vaccination) throws BusinessException {
-        User user = userService.findEntity(vaccination.getUser().getId());
-        AnimalBatch animalBatch = animalBatchService.findById(vaccination.getAnimalBatch().getId());
-
-        vaccination.setUser(user);
-        vaccination.setAnimalBatch(animalBatch);
+        User user = userService.findEntity(vaccination.getUserId());
+        AnimalBatch animalBatch = animalBatchService.findById(vaccination.getBatchId());
+//
+//        vaccination.setUser(user);
+//        vaccination.setAnimalBatch(animalBatch);
         return vaccinationRepository.save(vaccination);
     }
 }

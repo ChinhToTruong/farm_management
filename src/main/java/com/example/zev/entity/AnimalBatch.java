@@ -1,10 +1,8 @@
 package com.example.zev.entity;
 
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,13 +30,19 @@ public class AnimalBatch extends BaseEntity{
     @Pattern(regexp = "^ACTIVE|SOLD|COMPLETED|CANCELED$")
     private String status;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime startDate;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime expectedEndDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    private Long locationId;
+
+    private Long cropSeasonId;
+
+    @Transient
     private Location location;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @Transient
     private CropSeason season;
 }

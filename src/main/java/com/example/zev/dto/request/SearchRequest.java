@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,8 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class SearchRequest implements Serializable {
-    private int pageNo;
-    private int pageSize;
-    List<FilterRequest> filters;
-    List<SortRequest> sorts;
+    @Builder.Default
+    private int pageNo = 0;
+    @Builder.Default
+    private int pageSize = 10;
+    @Builder.Default
+    List<FilterRequest> filters = new ArrayList<>();
+    @Builder.Default
+    List<SortRequest> sorts = new ArrayList<>();
 }

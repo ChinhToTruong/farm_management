@@ -1,6 +1,7 @@
 package com.example.zev.entity;
 
 import com.example.zev.constants.Status;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -28,7 +29,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     private String name;
 
     @Column(name = "date_of_birth")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dob;
 
     @Column(name = "password")
@@ -46,7 +47,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
 //    @Transient
 //    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
 
     @Column(name = "status")

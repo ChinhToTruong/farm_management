@@ -20,8 +20,8 @@ public class AnimalBatchService extends CrudServiceImpl<AnimalBatch> {
 
     @Override
     public AnimalBatch create(AnimalBatch animalBatch) throws BusinessException {
-        Location location = locationService.findById(animalBatch.getLocation().getId());
-        CropSeason  cropSeason = cropSeasonService.findById(animalBatch.getSeason().getId());
+        Location location = locationService.findById(animalBatch.getLocationId());
+        CropSeason  cropSeason = cropSeasonService.findById(animalBatch.getCropSeasonId());
 
         animalBatch.setLocation(location);
         animalBatch.setSeason(cropSeason);

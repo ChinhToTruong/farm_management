@@ -3,6 +3,7 @@ package com.example.zev.service;
 import com.example.zev.constants.ErrorCode;
 import com.example.zev.constants.TokenType;
 import com.example.zev.dto.request.AuthenticationRequest;
+import com.example.zev.dto.request.EmailRequest;
 import com.example.zev.dto.response.AuthenticationResponse;
 import com.example.zev.entity.Token;
 import com.example.zev.entity.User;
@@ -33,6 +34,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
@@ -55,8 +57,12 @@ public class AuthService {
     }
 
     public String forgotPassword(String email) {
-        //send email here
-        return email;
+        User user = repository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+        String newPassword = user.getPassword() + "@123";
+        user.setPassword(passwordEncoder.encode(newPassword));
+        EmailRequest request = new EmailRequest(email, "NEW PASSWORD", newPassword);
+        emailService.sendEmail(request);
+        return "Success";
     }
 
     private void saveUserToken(User user, String jwtToken) {

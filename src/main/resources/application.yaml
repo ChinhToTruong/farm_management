@@ -18,8 +18,7 @@ spring:
       hibernate:
         format_sql: true
   datasource:
-    platform: postgres
-    url: jdbc:postgresql://postgres:5432/my_database
+    url: jdbc:postgresql://localhost:5432/my_database?serverTimezone=Asia/Ho_Chi_Minh
     username: postgres
     password: root
     driverClassName: org.postgresql.Driver
@@ -45,6 +44,9 @@ spring:
         smtp:
           auth: true
           starttls.enable: true
+  sql:
+    init:
+      platform: postgres
 
 application:
   security:
@@ -55,7 +57,7 @@ application:
         expiration: 604800000 # 7 days
 
 minio:
-  url: http://minio:9000
+  url: http://localhost:9000
   access-key: admin
   secret-key: admin@123
   bucket: mybucket

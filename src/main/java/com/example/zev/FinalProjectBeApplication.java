@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
+import java.util.TimeZone;
+
 
 @EnableJpaRepositories("com.example.zev.*")
 @ComponentScan(basePackages = { "com.example.zev.*" })
@@ -20,6 +22,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 public class FinalProjectBeApplication {
 
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        System.out.println(TimeZone.getDefault());
         SpringApplication.run(FinalProjectBeApplication.class, args);
     }
 

@@ -19,8 +19,8 @@ public class PlantService extends CrudServiceImpl<Plant> {
 
     @Override
     public Plant create(Plant plant) throws BusinessException {
-        Location location = locationService.findById(plant.getLocation().getId());
-        CropSeason cropSeason = cropSeasonService.findById(plant.getCropSeason().getId());
+        Location location = locationService.findById(plant.getLocationId());
+        CropSeason cropSeason = cropSeasonService.findById(plant.getCropSeasonId());
         plant.setLocation(location);
         plant.setCropSeason(cropSeason);
         return super.create(plant);

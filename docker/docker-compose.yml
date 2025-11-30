@@ -8,8 +8,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
       POSTGRES_DB: my_database
-      TZ: Asia/Ho_Chi_Minh
-      PGTZ: Asia/Ho_Chi_Minh
     ports:
       - "5432:5432"
     restart: on-failure
@@ -18,7 +16,7 @@ services:
       - ./init/postgres:/docker-entrypoint-initdb.d  # nơi chứa các file SQL khởi tạo
     networks:
       - zev-network
-    entrypoint: ["/docker-entrypoint-initdb.d/run-init.sh"]
+#    entrypoint: ["/docker-entrypoint-initdb.d/run-init.sh"]
 
   app:
     build:

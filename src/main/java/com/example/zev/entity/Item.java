@@ -1,9 +1,6 @@
 package com.example.zev.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
@@ -16,8 +13,11 @@ import java.math.BigDecimal;
 @Data
 @FieldNameConstants
 public class Item extends BaseEntity{
-    @ManyToOne
+    @Transient
     private Category category; // Nhóm vật tư
+
+    @Column(name = "category_id")
+    private Long categoryId; // Nhóm vật tư
 
     @Column(length = 150)
     private String name; // Tên vật tư
@@ -34,6 +34,9 @@ public class Item extends BaseEntity{
 
     private Integer currentQuantity; // Số lượng hiện có
 
-    @ManyToOne
+    @Transient
     private Location location; // Kho hoặc khu vực chứa
+
+    @Column(name = "location_id")
+    private Long locationId;
 }

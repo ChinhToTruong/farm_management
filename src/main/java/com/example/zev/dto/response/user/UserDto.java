@@ -28,7 +28,7 @@ public class UserDto extends BaseEntity {
     @Pattern(regexp = "^ACTIVE|INACTIVE", message = "status must be active, inactive")
     private String status;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dob;
     private String avatar;
     private Role role;

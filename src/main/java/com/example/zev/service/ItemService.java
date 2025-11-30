@@ -16,8 +16,8 @@ public class ItemService extends CrudServiceImpl<Item> {
 
     @Override
     public Item create(Item item) throws BusinessException {
-        Category category = categoryService.findById(item.getCategory().getId());
-        Location location = locationService.findById(item.getLocation().getId());
+        Category category = categoryService.findById(item.getCategoryId());
+        Location location = locationService.findById(item.getLocationId());
         item.setCategory(category);
         item.setLocation(location);
 
