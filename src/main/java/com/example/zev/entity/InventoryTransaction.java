@@ -1,12 +1,13 @@
 package com.example.zev.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
+import org.checkerframework.checker.units.qual.C;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,8 +20,11 @@ import java.util.List;
 @FieldNameConstants
 public class InventoryTransaction extends BaseEntity implements ExportExcel{
 
-    @ManyToOne
+    @Transient
     private Item item; // Vật tư được nhập hoặc xuất
+
+    @Column(name = "item_id")
+    private Long itemId;
 
     @Pattern(regexp = "^IMPORT|CONSUME|ADJUST")
     private String transactionType; // Loại giao dịch: import / consume / adjust
@@ -31,15 +35,23 @@ public class InventoryTransaction extends BaseEntity implements ExportExcel{
 
     private BigDecimal totalAmount; // Thành tiền = quantity × unit_price
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime transactionDate; // Ngày giao dịch
 
     private String note; // Ghi chú
 
-    @ManyToOne
+    @Transient
     private AnimalBatch relatedAnimalBatch; // Nếu liên quan đến đàn vật nuôi
 
-    @ManyToOne
+    @Column(name = "related_animal_batch_id")
+    private Long relatedAnimalBatchId;
+
+    @Transient
     private Plant relatedPlant; // Nếu liên quan đến cây trồng
+
+    @Column(name = "related_plant_id")
+    private Long relatedPlantId;
+
 
     @Override
     public List<String> getExcelHeaders() {
@@ -50,6 +62,7 @@ public class InventoryTransaction extends BaseEntity implements ExportExcel{
         );
     }
 
+    @JsonIgnore
     @Override
     public List<Object> getExcelData() {
         return List.of(
