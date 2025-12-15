@@ -45,6 +45,8 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @Column(name = "avatar")
     private String avatar;
 
+//    @Column(name = "role_id")
+//    private Long roleId;
 //    @Transient
 //    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)

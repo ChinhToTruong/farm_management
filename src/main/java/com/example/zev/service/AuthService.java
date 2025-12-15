@@ -8,6 +8,7 @@ import com.example.zev.dto.response.AuthenticationResponse;
 import com.example.zev.entity.Token;
 import com.example.zev.entity.User;
 import com.example.zev.exception.BusinessException;
+import com.example.zev.repository.RoleRepository;
 import com.example.zev.repository.TokenRepository;
 import com.example.zev.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,7 @@ public class AuthService {
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final RoleRepository roleRepository;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
@@ -43,8 +45,11 @@ public class AuthService {
                         request.getPassword()
                 )
         );
-        var user = repository.findByEmail(request.getEmail())
+        User user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + request.getEmail()));
+//        var role  = roleRepository.findById(user.getRoleId())
+//                .orElseThrow(() -> new UsernameNotFoundException("Role not found: " + user.getRoleId()));
+//        user.setRole(role);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);

@@ -17,10 +17,11 @@ public class WorkDiaryService extends CrudServiceImpl<WorkDiary> {
     private final PlantService plantService;
     private final CropSeasonService cropSeasonService;
     private final AnimalBatchService animalBatchService;
+    private final NotificationService notificationService;
 
     @Override
     public WorkDiary create(WorkDiary entity) throws BusinessException {
-//        User user = userService.findEntity(entity.getUserId());
+        User user = userService.findEntity(entity.getUserId());
 //        CropSeason cropSeason = cropSeasonService.findById(entity.getCropSeasonId());
 //        if (entity.getPlant() != null){
 //            Plant plant = plantService.findById(entity.getPlant().getId());
@@ -34,6 +35,8 @@ public class WorkDiaryService extends CrudServiceImpl<WorkDiary> {
 //        entity.setCropSeason(cropSeason);
 //        entity.setUser(user);
 
-        return super.create(entity);
+        WorkDiary work = super.create(entity);
+        notificationService.pushToUser(user.getUsername(), "Bạn có 1 công việc mới");
+        return work;
     }
 }

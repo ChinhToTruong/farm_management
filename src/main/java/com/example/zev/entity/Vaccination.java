@@ -25,8 +25,8 @@ public class Vaccination extends BaseEntity{
 
     private String vaccinationName;
 
-    @Transient
-    private User user;
+//    @Transient
+//    private User user;
 
     @Column(name = "user_id")
     private Long userId;

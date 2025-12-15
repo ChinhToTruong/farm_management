@@ -19,6 +19,8 @@ public class Role extends BaseEntity implements Serializable {
 //    @Pattern(regexp = "^FARMER|ENGINEER|ADMIN$", message = "roleName must be admin, engineer, admin")
     private String roleName;
     private String roleDescription;
+
+//    @Transient
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Permission> permissions;
 }

@@ -30,7 +30,8 @@ public class SecurityConfig {
             "/roles/**",
             "/permissions/**",
             "/files/**",
-            "/email/**"
+            "/email/**",
+        "/ws/**"
     );
 
 
