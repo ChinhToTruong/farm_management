@@ -31,7 +31,9 @@ public class SecurityConfig {
             "/permissions/**",
             "/files/**",
             "/email/**",
-        "/ws/**"
+        "/ai-chat/**",
+        "/ws/**",
+        "/api/test/push/**"
     );
 
 

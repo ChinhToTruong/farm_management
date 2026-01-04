@@ -25,4 +25,11 @@ public class NotificationService {
     messagingTemplate.convertAndSend("/user/totruongching@gmail.com/queue",  "message");
   }
 
+  public void notifyUser(String userId, String message) {
+    messagingTemplate.convertAndSend(
+        "/queue/notifications/" + userId,
+        message
+    );
+  }
+
 }

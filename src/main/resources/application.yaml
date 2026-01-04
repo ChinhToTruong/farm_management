@@ -8,6 +8,20 @@ spring:
       max-request-size: 50MB
   application:
     name: final-project-be
+  ai:
+    openai:
+      enabled: false
+      chat:
+        enabled: false
+
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: qwen2.5:7b-instruct
+        options:
+          temperature: 0.2
+          num-ctx: 2048
+          num-predict: 256
 
   jpa:
     database: POSTGRESQL
@@ -17,6 +31,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        jdbc:
+          time_zone: Asia/Ho_Chi_Minh
   datasource:
     url: jdbc:postgresql://localhost:5432/my_database?serverTimezone=Asia/Ho_Chi_Minh
     username: postgres
@@ -61,3 +77,9 @@ minio:
   access-key: admin
   secret-key: admin@123
   bucket: mybucket
+
+logging:
+  level:
+    org.springframework.web.socket: DEBUG
+    org.springframework.messaging: DEBUG
+

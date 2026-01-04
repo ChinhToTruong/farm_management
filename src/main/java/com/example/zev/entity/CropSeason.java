@@ -35,6 +35,9 @@ public class CropSeason extends BaseEntity{
     @Pattern(regexp = "^ACTIVE|COMPLETED|PAUSED", message = "status must be ACTIVE, COMPLETED, PAUSED")
     private String status;
 
+    @Column(name = "description")
+    private String description;
+
     private Long locationId;
 
     @Transient
