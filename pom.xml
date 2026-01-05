@@ -31,7 +31,7 @@
         <spring-ai.version>1.0.0</spring-ai.version>
     </properties>
     <dependencies>
-        <!-- WebFlux để stream -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
@@ -149,9 +149,9 @@
     </dependencyManagement>
     <repositories>
         <repository>
-            <id>spring-releases</id>
-            <name>Spring Releases</name>
-            <url>https://repo.spring.io/release</url>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
     </repositories>
     <build>

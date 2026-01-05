@@ -22,7 +22,7 @@ public class AIController {
       value = "/stream",
       produces = MediaType.TEXT_EVENT_STREAM_VALUE
   )
-  public Flux<String> stream(@RequestParam String message) {
+  public Flux<String> stream(@RequestParam("message") String message) {
     return aiService.chatStream(message);
   }
 

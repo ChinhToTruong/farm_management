@@ -33,7 +33,8 @@ public class SecurityConfig {
             "/email/**",
         "/ai-chat/**",
         "/ws/**",
-        "/api/test/push/**"
+        "/api/test/push/**",
+        "/notifications/**"
     );
 
 
