@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.Many;
+import reactor.core.scheduler.Schedulers;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class NotificationServiceV2 {
   private final NotificationRepository repo;
 
   // map userId -> SSE sink
-  private final Map<Long, Many<Notification>> sinks = new ConcurrentHashMap<>();
+  private final Map<Long, Sinks.Many<Notification>> sinks = new ConcurrentHashMap<>();
 
   public Notification createNotification(Long userId, String title, String message) {
     Notification n = new Notification();
@@ -43,8 +44,10 @@ public class NotificationServiceV2 {
   }
 
   public Flux<Notification> streamNotifications(Long userId) {
-    return sinks.computeIfAbsent(userId, k -> Sinks.many().multicast().onBackpressureBuffer())
-        .asFlux();
+    return sinks
+        .computeIfAbsent(userId, k -> Sinks.many().multicast().onBackpressureBuffer())
+        .asFlux()
+        .publishOn(Schedulers.boundedElastic());
   }
 
   public void markAsRead(Long id) {

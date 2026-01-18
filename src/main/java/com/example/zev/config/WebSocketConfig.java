@@ -7,6 +7,7 @@ import com.example.zev.service.JwtService;
 import com.example.zev.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -31,47 +32,25 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer  {
   private final UserRepository userRepository;
 
   @Override
+  public void registerStompEndpoints(StompEndpointRegistry registry) {
+    registry.addEndpoint("/ws")
+        .setAllowedOriginPatterns("*")
+        .withSockJS();
+  }
+
+  @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
-    registry.enableSimpleBroker("/topic", "/queue");
-    registry.setUserDestinationPrefix("/user"); // BẮT BUỘC
+    registry.enableSimpleBroker("/topic");
     registry.setApplicationDestinationPrefixes("/app");
   }
 
   @Override
-  public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint("/ws")
-        .setAllowedOriginPatterns("*");
+  public void configureClientInboundChannel(ChannelRegistration registration) {
+    registration.interceptors(authChannelInterceptor());
   }
 
-
-  @Override
-  public void configureClientInboundChannel(ChannelRegistration registration) {
-    registration.interceptors(new ChannelInterceptor() {
-      @Override
-      public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        StompHeaderAccessor accessor =
-            MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-
-        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-          String authHeader = accessor.getFirstNativeHeader("Authorization");
-          if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Missing Authorization header");
-          }
-
-          String token = authHeader.substring(7); // ⭐ CẮT "Bearer "
-          String username = jwtService.extractUsername(token);
-          User user = userRepository.findByEmail(username)
-              .orElseThrow();
-
-          Authentication auth =
-              new UsernamePasswordAuthenticationToken(
-                  username, null, List.of()
-              );
-
-          accessor.setUser(auth); // ⭐ QUAN TRỌNG
-        }
-        return message;
-      }
-    });
+  @Bean
+  public ChannelInterceptor authChannelInterceptor() {
+    return new AuthChannelInterceptor();
   }
 }

@@ -6,11 +6,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import kotlin.BuilderInference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "Notification")
 @Table(name = "notifications")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Notification {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

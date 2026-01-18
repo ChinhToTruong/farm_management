@@ -32,7 +32,9 @@ public class NotificationControllerV2 {
   // SSE stream
   @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<Notification> stream(@RequestParam Long userId) {
-    return service.streamNotifications(userId);
+    return service.streamNotifications(userId)
+        .doOnError(e -> log.error("SSE error", e))
+        .onErrorResume(e -> Flux.empty());
   }
 
   // fetch danh sách notification chưa đọc

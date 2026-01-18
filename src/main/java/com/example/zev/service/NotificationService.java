@@ -1,5 +1,6 @@
 package com.example.zev.service;
 
+import com.example.zev.entity.Notification;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,24 +12,12 @@ import org.springframework.stereotype.Service;
 public class NotificationService {
 
 
-  private static final Logger log = LoggerFactory.getLogger(NotificationService.class);
   private final SimpMessagingTemplate messagingTemplate;
 
-  public void pushToUser(String username, String message) {
-    log.info("pushToUser: " + username + " " + message);
-//    messagingTemplate.convertAndSendToUser(
-//        username,
-//        "/queue/notifications",
-//        message
-//    );
-
-    messagingTemplate.convertAndSend("/user/totruongching@gmail.com/queue",  "message");
-  }
-
-  public void notifyUser(String userId, String message) {
+  public void notifyUser(Long userId, Notification n) {
     messagingTemplate.convertAndSend(
-        "/queue/notifications/" + userId,
-        message
+        "/topic/notification." + userId,
+        n
     );
   }
 
