@@ -2,6 +2,7 @@ package com.example.zev.controller;
 
 import com.example.zev.entity.WorkDiary;
 import com.example.zev.service.WorkDiaryService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/work-diaries")
 public class WorkDiaryController extends BaseController<WorkDiary> {
 
-    protected final WorkDiaryService service;
+    protected WorkDiaryService service;
 
 
     protected WorkDiaryController(WorkDiaryService service) {

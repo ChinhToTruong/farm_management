@@ -56,7 +56,7 @@ public class InventoryTransaction extends BaseEntity implements ExportExcel{
     @Override
     public List<String> getExcelHeaders() {
         return List.of(
-                "ID", "Vật tư", "Loại giao dịch", "Số lượng", "Đơn giá",
+             "Vật tư", "Loại giao dịch", "Số lượng", "Đơn giá",
                 "Thành tiền", "Ngày giao dịch", "Ghi chú",
                 "Đàn vật nuôi", "Cây trồng", "Người tạo", "Ngày tạo", "Người sửa", "Ngày sửa"
         );
@@ -66,7 +66,6 @@ public class InventoryTransaction extends BaseEntity implements ExportExcel{
     @Override
     public List<Object> getExcelData() {
         return List.of(
-                getId(),
                 item != null ? item.getName() : "",
                 transactionType,
                 quantity,

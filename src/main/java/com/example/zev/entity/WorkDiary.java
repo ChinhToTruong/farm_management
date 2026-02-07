@@ -8,13 +8,14 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity(name = "WorkDiary")
 @Table(name = "work_diaries")
 @Data
 @FieldNameConstants
-public class WorkDiary extends BaseEntity{
+public class WorkDiary extends BaseEntity implements ExportExcel {
 
     @Column(name = "user_id")
     private Long userId;
@@ -49,4 +50,14 @@ public class WorkDiary extends BaseEntity{
 
     @Pattern(regexp = "^PENDING|DONE|DELAYED$")
     private String status; // Trạng thái: pending, done, delayed
+
+    @Override
+    public List<String> getExcelHeaders() {
+        return List.of();
+    }
+
+    @Override
+    public List<Object> getExcelData() {
+        return List.of();
+    }
 }

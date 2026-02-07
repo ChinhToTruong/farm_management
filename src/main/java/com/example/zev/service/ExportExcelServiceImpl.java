@@ -5,7 +5,9 @@ import com.example.zev.entity.BaseEntity;
 import com.example.zev.entity.ExportExcel;
 import com.example.zev.exception.BusinessException;
 import com.example.zev.repository.CrudRepository;
+import java.util.Objects;
 import lombok.Setter;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,7 @@ public abstract class ExportExcelServiceImpl<T extends BaseEntity & ExportExcel>
                 Row row = sheet.createRow(rowIdx++);
                 List<Object> values = item.getExcelData();
                 for (int i = 0; i < values.size(); i++) {
+                    if (Objects.isNull(values.get(i))) continue;
                     Object value = values.get(i);
                     row.createCell(i).setCellValue(value != null ? value.toString() : "");
                 }

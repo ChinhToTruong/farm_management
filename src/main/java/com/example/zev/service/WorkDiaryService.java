@@ -4,8 +4,11 @@ import com.example.zev.entity.Notification;
 import com.example.zev.entity.User;
 import com.example.zev.entity.WorkDiary;
 import com.example.zev.exception.BusinessException;
+import com.example.zev.repository.UserRepository;
 import com.example.zev.repository.WorkDiaryRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +21,7 @@ public class WorkDiaryService extends CrudServiceImpl<WorkDiary> {
     private final CropSeasonService cropSeasonService;
     private final AnimalBatchService animalBatchService;
     private final NotificationService notificationService;
+    private final UserRepository userRepository;
 
     @Override
     public WorkDiary create(WorkDiary entity) throws BusinessException {
@@ -32,4 +36,47 @@ public class WorkDiaryService extends CrudServiceImpl<WorkDiary> {
         notificationService.notifyUser(user.getId(), notification);
         return work;
     }
+
+
+    @Scheduled(cron = "0 */1 * * * ?")
+    public void notifyWorkForUser() {
+        // 1. Lấy danh sách user có công việc PENDING
+        List<User> users = userRepository
+            .findUsersHavePendingWork();
+
+        for (User user : users) {
+
+            // 2. Đếm số công việc được phân cho user
+            long totalWork = workDiaryRepository
+                .countWorkDiaryByUserIdAndStatus(
+                    user.getId(),
+                    "PENDING"
+                );
+
+            // 3. Notify cho từng user
+            sendNotify(user, totalWork);
+        }
+    }
+
+    private void sendNotify(User user, long totalWork) {
+
+        if (totalWork == 0) {
+            return;
+        }
+
+        Notification notification = new Notification();
+        notification.setRead(false);
+        notification.setTitle("Thông báo");
+        notification.setMessage("Bạn"
+            + " có " + totalWork + " công việc đang chờ xử lý");
+        notification.setUserId(user.getId());
+        notificationService.notifyUser(user.getId(), notification);
+        System.out.println(
+            "Bạn"
+                + " có " + totalWork + " công việc đang chờ xử lý"
+        );
+
+        // WebSocket / Firebase / Email xử lý tại đây
+    }
+
 }

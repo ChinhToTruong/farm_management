@@ -24,4 +24,6 @@ public interface WorkDiaryRepository extends CrudRepository<WorkDiary> {
   List<WorkDiaryDailyStatusDTO> summarizeByDateAndStatus(
       @Param("userId") Long userId
   );
+
+  int countWorkDiaryByUserIdAndStatus(Long userId, String status);
 }
