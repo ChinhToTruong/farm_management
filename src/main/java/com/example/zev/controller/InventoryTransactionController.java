@@ -5,6 +5,7 @@ import com.example.zev.entity.InventoryTransaction;
 import com.example.zev.exception.BusinessException;
 import com.example.zev.service.InventoryTransactionExportService;
 import com.example.zev.service.InventoryTransactionService;
+import java.io.IOException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,10 +25,9 @@ public class InventoryTransactionController extends BaseController<InventoryTran
     }
 
     @GetMapping("/export")
-    public ResponseData<?> exportExcel() throws BusinessException {
-        String reportName = "inventory-transactions";
+    public ResponseData<?> export() throws IOException {
         return ResponseData.builder()
-                .data(exportService.exportExcel(reportName))
-                .build();
+            .data(service.exportExcel())
+            .build();
     }
 }

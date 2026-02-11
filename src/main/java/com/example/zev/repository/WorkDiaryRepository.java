@@ -45,7 +45,7 @@ public interface WorkDiaryRepository extends CrudRepository<WorkDiary> {
                            on w.batch_id = a.id
                  left join crop_seasons s
                            on w.crop_season_id = s.id
-        where w.status = 'PENDING'
+        where w.status = 'PENDING' and u.id = :userId
   """, nativeQuery = true)
-  List<Object[]> findByUserId(Long userId);
+  List<Object[]> findByUserId(@Param("userId") Long userId);
 }
