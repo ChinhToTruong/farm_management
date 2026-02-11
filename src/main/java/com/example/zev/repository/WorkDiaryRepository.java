@@ -26,4 +26,26 @@ public interface WorkDiaryRepository extends CrudRepository<WorkDiary> {
   );
 
   int countWorkDiaryByUserIdAndStatus(Long userId, String status);
+
+  @Query(value = """
+      select w.task_name,
+               w.description,
+               TO_CHAR(w.work_date, 'DD-MM-YYYY'),
+               s.season_name,
+               u.name,
+               p.plant_name,
+               a.batch_name,
+               'Chưa hoàn thành' as status
+        from work_diaries w
+                 left join users u
+                           on w.user_id = u.id
+                 left join plants p
+                           on w.plant_id = p.id
+                 left join animal_batch a
+                           on w.batch_id = a.id
+                 left join crop_seasons s
+                           on w.crop_season_id = s.id
+        where w.status = 'PENDING'
+  """, nativeQuery = true)
+  List<Object[]> findByUserId(Long userId);
 }

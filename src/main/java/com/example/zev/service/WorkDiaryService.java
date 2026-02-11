@@ -6,6 +6,9 @@ import com.example.zev.entity.WorkDiary;
 import com.example.zev.exception.BusinessException;
 import com.example.zev.repository.UserRepository;
 import com.example.zev.repository.WorkDiaryRepository;
+import com.example.zev.utils.AuthUtils;
+import com.example.zev.utils.ExportExcelUtils;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -35,6 +38,23 @@ public class WorkDiaryService extends CrudServiceImpl<WorkDiary> {
         notification.setUserId(user.getId());
         notificationService.notifyUser(user.getId(), notification);
         return work;
+    }
+
+    public String exportExcel() throws IOException {
+        Long userId = AuthUtils.getUserId();
+        List<Object[]> rows = workDiaryRepository.findByUserId(userId);
+        List<String> headers = List.of(
+            "Tên công việc",
+            "Nội dung công việc",
+            "Ngày thực hiện",
+            "Vụ mùa",
+            "Người thực hiện",
+            "Cây trồng",
+            "Đàn vật nuôi",
+            "Trạng thái xử lý"
+        );
+
+        return ExportExcelUtils.exportExcelBase64("Công việc hàng ngày", headers, rows);
     }
 
 

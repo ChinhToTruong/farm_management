@@ -16,6 +16,4 @@ public class WorkDiaryDailyStatusDTO {
   private String status;
   private Long total;
 
-
-
 }
