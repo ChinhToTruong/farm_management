@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/zev2t/final-project-be.git'
+                    url: 'https://github.com/ChinhToTruong/farm_management'
             }
         }
 
