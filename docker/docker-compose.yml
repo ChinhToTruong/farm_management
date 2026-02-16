@@ -1,22 +1,22 @@
 
 name: farm
 services:
-  postgres:
-    image: postgres:16
-    container_name: zev-postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: my_database
-    ports:
-      - "5432:5432"
-    restart: on-failure
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data
-      - ./init/postgres:/docker-entrypoint-initdb.d  # nơi chứa các file SQL khởi tạo
-    networks:
-      - zev-network
-#    entrypoint: ["/docker-entrypoint-initdb.d/run-init.sh"]
+#  postgres:
+#    image: postgres:16
+#    container_name: zev-postgres
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: root
+#      POSTGRES_DB: my_database
+#    ports:
+#      - "5432:5432"
+#    restart: on-failure
+#    volumes:
+#      - ./data/postgres:/var/lib/postgresql/data
+#      - ./init/postgres:/docker-entrypoint-initdb.d  # nơi chứa các file SQL khởi tạo
+#    networks:
+#      - zev-network
+##    entrypoint: ["/docker-entrypoint-initdb.d/run-init.sh"]
 
   app:
     build:
@@ -24,9 +24,9 @@ services:
       dockerfile: docker/Dockerfile
     container_name: zev-app
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/my_database
+      SPRING_DATASOURCE_URL: jdbc:postgresql://103.101.161.248:5432/mydb
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_PASSWORD: postgres
     ports:
       - "8080:8080"
     depends_on:
@@ -34,40 +34,40 @@ services:
     networks:
       - zev-network
     restart: always
-  minio:
-    extends:
-      file: ./minio.yml
-      service: minio
-    networks:
-      - zev-network
-  redis:
-    extends:
-      file: ./redis.yml
-      service: redis
-    networks:
-      - zev-network
-  zookeeper:
-    extends:
-      file: ./kafka.yml
-      service: zookeeper
-    networks:
-      - zev-network
-  broker:
-    extends:
-      file: ./kafka.yml
-      service: broker
-    depends_on:
-      - zookeeper
-    networks:
-      - zev-network
-  kafka-ui:
-    extends:
-      file: ./kafka.yml
-      service: kafka-ui
-    depends_on:
-      - broker
-    networks:
-      - zev-network
+#  minio:
+#    extends:
+#      file: ./minio.yml
+#      service: minio
+#    networks:
+#      - zev-network
+#  redis:
+#    extends:
+#      file: ./redis.yml
+#      service: redis
+#    networks:
+#      - zev-network
+#  zookeeper:
+#    extends:
+#      file: ./kafka.yml
+#      service: zookeeper
+#    networks:
+#      - zev-network
+#  broker:
+#    extends:
+#      file: ./kafka.yml
+#      service: broker
+#    depends_on:
+#      - zookeeper
+#    networks:
+#      - zev-network
+#  kafka-ui:
+#    extends:
+#      file: ./kafka.yml
+#      service: kafka-ui
+#    depends_on:
+#      - broker
+#    networks:
+#      - zev-network
 
 networks:
   zev-network:
